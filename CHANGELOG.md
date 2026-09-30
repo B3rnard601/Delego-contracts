@@ -84,6 +84,10 @@ will reject the change.
 
 ### Unreleased
 
+### 0.0.1 - 2026-09-29
+
+- Record the current on-chain contract version after the Soroban SDK 22 compatibility update.
+
 ### 0.2.0 - 2026-08-29
 
 - Initial tracked release for this contract. On-chain `version()` returns `0.2.0`
