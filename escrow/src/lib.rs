@@ -59,8 +59,11 @@ use delego_interfaces::LendingPoolClient;
 pub mod invariants;
 
 mod admin_actions;
+mod token_transfer;
 #[cfg(test)]
 mod admin_actions_test;
+#[cfg(test)]
+mod token_transfer_test;
 pub use admin_actions::{
     AdminAction, PendingAdminAction, QueuedAdminAction, ADMIN_ACTION_DELAY_LEDGERS,
     ADMIN_ACTION_DELAY_SECONDS,
@@ -2129,6 +2132,12 @@ pub enum EscrowError {
     InspectionConfigNotSet = 446,
     /// Inspection auto-release ledger has not been reached yet.
     InspectionAutoReleaseNotReady = 447,
+    /// Token transfer failed or trapped.
+    TokenTransferFailed = 448,
+    /// Token transfer explicitly returned false.
+    TokenTransferRejected = 449,
+    /// Token transfer returned an unsupported value.
+    TokenUnexpectedReturn = 450,
 }
 
 /// Runs `f` under a re-entrancy lock and returns its result unchanged.
@@ -2288,6 +2297,9 @@ impl_escrow_error_try_from! {
     416 => ExceedsTotalEscrowAmount,
     417 => MerchantCategoryNotAllowed,
     418 => SubItemAlreadyResolved,
+    448 => TokenTransferFailed,
+    449 => TokenTransferRejected,
+    450 => TokenUnexpectedReturn,
 }
 
 impl TryFrom<&soroban_sdk::Error> for EscrowError {
